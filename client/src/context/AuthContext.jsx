@@ -18,9 +18,18 @@ export const AuthProvider = ({ children }) => {
     }
     try {
       const { data } = await authService.getMe();
-      setUser(data.user);
-      localStorage.setItem('user', JSON.stringify(data.user));
-    } catch {
+      const userData = data.user || data;
+      
+      // Ensure role is set
+      if (!userData.role) {
+        logout();
+        return;
+      }
+      
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
+    } catch (err) {
+      console.error('Failed to fetch user:', err);
       logout();
     } finally {
       setLoading(false);

@@ -32,7 +32,7 @@ exports.register = async (req, res, next) => {
     }
 
     const user = await User.create(userData);
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     res.status(201).json({
       success: true,
@@ -108,8 +108,22 @@ exports.login = async (req, res, next) => {
 // @access  Private
 exports.getMe = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id);
-    res.json({ success: true, user });
+    const user = await User.findById(req.user._id).select('-password');
+    res.json({ 
+      success: true, 
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        location: user.location,
+        isVerified: user.isVerified,
+        averageRating: user.averageRating,
+        totalEarnings: user.totalEarnings,
+        performanceScore: user.performanceScore,
+      }
+    });
   } catch (err) {
     next(err);
   }

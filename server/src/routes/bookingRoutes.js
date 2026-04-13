@@ -17,19 +17,20 @@ const validate = require('../middleware/validate');
 
 const router = express.Router();
 
+// Dashboard routes - must come BEFORE /:id to avoid route matching issues
 router.get('/dashboard/owner', protect, authorize('owner'), getOwnerDashboard);
 router.get('/dashboard/driver', protect, authorize('driver'), getDriverDashboard);
-
-router.route('/')
-  .post(protect, authorize('driver'), [
-    body('vehicleId').notEmpty().withMessage('Vehicle ID is required'),
-    body('startDate').isISO8601().withMessage('Valid start date is required'),
-    body('endDate').isISO8601().withMessage('Valid end date is required'),
-  ], validate, createBooking);
-
 router.get('/my', protect, authorize('driver'), getMyBookings);
 router.get('/requests', protect, authorize('owner'), getBookingRequests);
 
+// Main create route
+router.post('/', protect, authorize('driver'), [
+  body('vehicleId').notEmpty().withMessage('Vehicle ID is required'),
+  body('startDate').isISO8601().withMessage('Valid start date is required'),
+  body('endDate').isISO8601().withMessage('Valid end date is required'),
+], validate, createBooking);
+
+// Individual booking routes with :id
 router.get('/:id', protect, getBooking);
 router.put('/:id/respond', protect, authorize('owner'), [
   body('action').isIn(['approved', 'rejected']).withMessage('Action must be approved or rejected'),
