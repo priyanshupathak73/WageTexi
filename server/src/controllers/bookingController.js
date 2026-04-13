@@ -2,6 +2,8 @@ const Booking = require('../models/Booking');
 const Vehicle = require('../models/Vehicle');
 const User = require('../models/User');
 const AppError = require('../utils/AppError');
+const { updatePerformanceScore } = require('./performanceController');
+const { computeSurge } = require('./pricingController');
 
 // @desc    Create booking request
 // @route   POST /api/bookings
@@ -19,7 +21,10 @@ exports.createBooking = async (req, res, next) => {
     if (start >= end) return next(new AppError('End date must be after start date', 400));
 
     const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-    const totalAmount = totalDays * vehicle.pricing.daily;
+
+    // Apply surge pricing
+    const { multiplier } = await computeSurge(vehicle);
+    const totalAmount = Math.round(totalDays * vehicle.pricing.daily * multiplier);
 
     // Check for overlapping bookings
     const overlap = await Booking.findOne({
@@ -40,6 +45,7 @@ exports.createBooking = async (req, res, next) => {
       endDate: end,
       totalDays,
       totalAmount,
+      surgeMultiplier: multiplier,
       notes,
     });
 
@@ -205,9 +211,14 @@ exports.cancelBooking = async (req, res, next) => {
     booking.status = 'cancelled';
     await booking.save();
 
+    // Restore vehicle availability if it was approved
     if (booking.status === 'approved') {
       await Vehicle.findByIdAndUpdate(booking.vehicle, { isAvailable: true });
     }
+
+    // Update driver cancelled count and recalculate score
+    await User.findByIdAndUpdate(booking.driver, { $inc: { cancelledTrips: 1 } });
+    await updatePerformanceScore(booking.driver);
 
     res.json({ success: true, booking });
   } catch (err) {
@@ -241,6 +252,10 @@ exports.completeBooking = async (req, res, next) => {
     });
 
     await User.findByIdAndUpdate(booking.owner, { $inc: { totalEarnings: booking.totalAmount } });
+
+    // Update driver completed count and recalculate score
+    await User.findByIdAndUpdate(booking.driver, { $inc: { completedTrips: 1 } });
+    await updatePerformanceScore(booking.driver);
 
     res.json({ success: true, booking });
   } catch (err) {

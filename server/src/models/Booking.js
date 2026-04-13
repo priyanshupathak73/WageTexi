@@ -50,6 +50,11 @@ const bookingSchema = new mongoose.Schema(
     },
     notes: String,
     rejectionReason: String,
+    surgeMultiplier: { type: Number, default: 1.0 },
+    contract: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Contract',
+    },
     ownerReviewed: {
       type: Boolean,
       default: false,

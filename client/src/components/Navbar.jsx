@@ -1,6 +1,26 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Car, LogOut, LayoutDashboard, Search, BookOpen, Star } from 'lucide-react';
+import { Car, LogOut, LayoutDashboard, Search, BookOpen, Zap, Bell } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const NavLink = ({ to, icon: Icon, label }) => {
+  const { pathname } = useLocation();
+  const isActive = pathname === to || pathname.startsWith(to + '/');
+
+  return (
+    <Link
+      to={to}
+      className={`flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-lg transition-all ${
+        isActive
+          ? 'bg-yellow-400/20 text-yellow-400'
+          : 'text-slate-400 hover:text-white hover:bg-white/5'
+      }`}
+    >
+      <Icon size={15} />
+      {label}
+    </Link>
+  );
+};
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -12,75 +32,103 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 px-4 py-3">
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+      className="bg-slate-900 border-b border-slate-800 px-4 py-2.5 sticky top-0 z-50 shadow-lg shadow-slate-900/50"
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-blue-600 font-bold text-xl">
-          <Car size={24} />
-          WageTexi
+        {/* Logo */}
+        <Link to="/">
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="flex items-center gap-2 text-yellow-400 font-extrabold text-xl tracking-tight"
+          >
+            <div className="bg-yellow-400 p-1.5 rounded-lg">
+              <Car size={18} className="text-slate-900" />
+            </div>
+            WageTexi
+          </motion.div>
         </Link>
 
-        <div className="flex items-center gap-4">
+        {/* Nav links */}
+        <div className="flex items-center gap-1">
           {user ? (
             <>
-              <Link to="/dashboard" className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600">
-                <LayoutDashboard size={16} />
-                Dashboard
-              </Link>
+              <NavLink to="/dashboard" icon={LayoutDashboard} label="Dashboard" />
 
               {user.role === 'driver' && (
                 <>
-                  <Link to="/vehicles" className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600">
-                    <Search size={16} />
-                    Find Vehicles
-                  </Link>
-                  <Link to="/bookings" className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600">
-                    <BookOpen size={16} />
-                    My Bookings
-                  </Link>
+                  <NavLink to="/vehicles" icon={Search} label="Find Vehicles" />
+                  <NavLink to="/bookings" icon={BookOpen} label="My Bookings" />
+                  <NavLink to="/smart-match" icon={Zap} label="AI Match" />
                 </>
               )}
 
               {user.role === 'owner' && (
                 <>
-                  <Link to="/my-vehicles" className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600">
-                    <Car size={16} />
-                    My Vehicles
-                  </Link>
-                  <Link to="/booking-requests" className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600">
-                    <BookOpen size={16} />
-                    Requests
-                  </Link>
+                  <NavLink to="/my-vehicles" icon={Car} label="My Vehicles" />
+                  <NavLink to="/booking-requests" icon={BookOpen} label="Requests" />
                 </>
               )}
 
-              <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-200">
-                <span className="text-sm font-medium text-gray-700">{user.name}</span>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                  user.role === 'driver' ? 'bg-green-100 text-green-700' :
-                  user.role === 'owner' ? 'bg-blue-100 text-blue-700' :
-                  'bg-purple-100 text-purple-700'
-                }`}>
-                  {user.role}
-                </span>
+              {/* Right side: notification + user */}
+              <div className="flex items-center gap-2 ml-3 pl-3 border-l border-slate-700">
+                {/* Notification placeholder */}
                 <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-1 text-sm text-gray-500 hover:text-red-600 ml-1"
+                  className="relative p-1.5 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                  title="Notifications"
                 >
-                  <LogOut size={16} />
+                  <Bell size={18} />
                 </button>
+
+                {/* User pill */}
+                <div className="flex items-center gap-2 bg-white/5 border border-slate-700 rounded-xl px-3 py-1.5">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-slate-900 text-xs font-black shrink-0">
+                    {user.name?.[0]?.toUpperCase()}
+                  </div>
+                  <span className="text-sm font-semibold text-white hidden sm:block">{user.name}</span>
+                  <span className={`text-xs px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider hidden sm:block ${
+                    user.role === 'driver'
+                      ? 'bg-yellow-400/20 text-yellow-400'
+                      : user.role === 'owner'
+                      ? 'bg-blue-500/20 text-blue-400'
+                      : 'bg-purple-500/20 text-purple-400'
+                  }`}>
+                    {user.role}
+                  </span>
+                </div>
+
+                {/* Logout */}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={handleLogout}
+                  className="p-1.5 text-slate-500 hover:text-red-400 transition-colors rounded-lg hover:bg-red-500/10"
+                  title="Logout"
+                >
+                  <LogOut size={17} />
+                </motion.button>
               </div>
             </>
           ) : (
-            <div className="flex gap-3">
-              <Link to="/login" className="text-sm text-gray-600 hover:text-blue-600 font-medium">Login</Link>
-              <Link to="/register" className="text-sm bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-700 font-medium">
+            <div className="flex items-center gap-3">
+              <Link to="/login" className="text-sm text-slate-300 hover:text-yellow-400 font-semibold transition-colors px-3 py-1.5">
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="text-sm bg-yellow-400 text-slate-900 px-4 py-2 rounded-xl hover:bg-yellow-300 font-bold shadow-md shadow-yellow-500/20 transition-all"
+              >
                 Register
               </Link>
             </div>
           )}
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

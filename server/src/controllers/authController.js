@@ -55,18 +55,33 @@ exports.register = async (req, res, next) => {
 // @access  Public
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     const user = await User.findOne({ email }).select('+password');
-    if (!user || !(await user.comparePassword(password))) {
-      return next(new AppError('Invalid email or password', 401));
+    if (!user) {
+      return next(new AppError('No account found with this email address', 401));
+    }
+
+    const isPasswordCorrect = await user.comparePassword(password);
+    if (!isPasswordCorrect) {
+      return next(new AppError('Incorrect password. Please try again', 401));
+    }
+
+    // Role verification — only if caller explicitly sends a role
+    if (role && role !== user.role) {
+      return next(
+        new AppError(
+          `This account is registered as a "${user.role}". Please select the correct role.`,
+          401
+        )
+      );
     }
 
     if (!user.isActive) {
       return next(new AppError('Account has been deactivated', 403));
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     res.json({
       success: true,

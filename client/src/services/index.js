@@ -41,3 +41,28 @@ export const adminService = {
   toggleUser: (id) => api.put(`/admin/users/${id}/toggle`),
   verifyVehicle: (id) => api.put(`/admin/vehicles/${id}/verify`),
 };
+
+export const matchService = {
+  getMatchedVehicles: () => api.get('/match/vehicles'),
+};
+
+export const pricingService = {
+  getDynamicPrice: (vehicleId) => api.get(`/vehicles/${vehicleId}/price`),
+};
+
+export const performanceService = {
+  getPerformance: (driverId) => api.get(`/drivers/${driverId}/performance`),
+};
+
+export const contractService = {
+  create: (bookingId) => api.post('/contracts/create', { bookingId }),
+  getByBooking: (bookingId) => api.get(`/contracts/booking`, { params: { booking: bookingId } }),
+  getById: (id) => api.get(`/contracts/${id}`),
+  sign: (id) => api.patch(`/contracts/${id}/sign`),
+};
+
+export const locationService = {
+  updateLocation: (data) => api.post('/location/update', data),
+  getTripLocation: (bookingId) => api.get(`/location/trip/${bookingId}`),
+  stopTracking: (bookingId) => api.patch(`/location/trip/${bookingId}/stop`),
+};

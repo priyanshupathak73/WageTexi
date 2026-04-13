@@ -9,6 +9,12 @@ const Register = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in
+  if (useAuth().user && !loading) {
+    navigate('/dashboard');
+    return null;
+  }
   const [form, setForm] = useState({
     name: '',
     email: '',

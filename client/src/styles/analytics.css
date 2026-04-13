@@ -1,0 +1,641 @@
+/* Analytics Dashboard Styles */
+
+.analytics-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.analytics-container h1 {
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.analytics-container h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+/* Filter Section */
+.filter-section {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  flex-wrap: wrap;
+}
+
+.filter-section label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.filter-section input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.filter-section input:focus {
+  outline: none;
+  border-color: #ffa500;
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
+}
+
+.btn-refresh {
+  padding: 0.75rem 2rem;
+  background: #ffa500;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-refresh:hover {
+  background: #ff8c00;
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.card .amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffa500;
+  margin: 0;
+}
+
+/* Tables */
+.trips-table,
+.vehicle-table,
+.bookings-table,
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.trips-table thead,
+.vehicle-table thead,
+.bookings-table thead,
+.history-table thead {
+  background: #f5f5f5;
+  color: #333;
+  font-weight: 600;
+}
+
+.trips-table th,
+.vehicle-table th,
+.bookings-table th,
+.history-table th {
+  padding: 1.25rem;
+  text-align: left;
+  font-size: 0.95rem;
+  border-bottom: 2px solid #eee;
+}
+
+.trips-table td,
+.vehicle-table td,
+.bookings-table td,
+.history-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.trips-table tbody tr:hover,
+.vehicle-table tbody tr:hover,
+.bookings-table tbody tr:hover,
+.history-table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+/* Daily Earnings */
+.daily-earnings {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.daily-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.daily-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+  border-left: 4px solid #ffa500;
+}
+
+.daily-item .amount {
+  font-weight: 700;
+  color: #ffa500;
+}
+
+/* Score Cards */
+.score-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.score-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.score-card h3 {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.score-card .score {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffa500;
+  margin: 0;
+}
+
+.score-card .subtext {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 0.5rem;
+}
+
+.score-card.excellent {
+  border-top: 4px solid #27ae60;
+}
+
+.score-card.good {
+  border-top: 4px solid #3498db;
+}
+
+.score-card.fair {
+  border-top: 4px solid #f39c12;
+}
+
+.score-card.poor {
+  border-top: 4px solid #e74c3c;
+}
+
+/* Statistics Section */
+.statistics-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.stat-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.stat-box h4 {
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem 0;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.stat-box .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Reviews Section */
+.reviews-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.reviews-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.review-card {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #ffa500;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.review-header .rating {
+  font-weight: 700;
+  color: #ffa500;
+}
+
+.review-header .date {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.review-comment {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Performance Tips */
+.performance-tips {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.performance-tips ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.performance-tips li {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #27ae60;
+  line-height: 1.6;
+}
+
+/* Admin Cards */
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.card.large {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card.large h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.metric span {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.metric .value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffa500;
+  margin: 0;
+}
+
+/* Revenue Cards */
+.earnings-section,
+.vehicle-earnings,
+.recent-bookings,
+.trip-history,
+.chart-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.revenue-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.revenue-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.revenue-card h3 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+.revenue-card .large-amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* KPI Grid */
+.performance-metrics,
+.system-health {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.kpi {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.kpi-label {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+/* System Health */
+.health-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.health-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.status-badge.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+/* Error Banner */
+.error-banner {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #dc3545;
+  font-weight: 500;
+}
+
+/* Loader */
+.analytics-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* No Data Message */
+.no-data {
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  text-align: center;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+/* Vehicle Header */
+.vehicle-header {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.vehicle-header h2 {
+  margin: 0 0 0.5rem 0;
+}
+
+.vehicle-header p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.rating {
+  color: #ffa500;
+  font-weight: 600;
+}
+
+.no-review {
+  color: #999;
+  font-style: italic;
+}
+
+.review-badge {
+  background: #fffacd;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .analytics-container {
+    padding: 1rem;
+  }
+
+  .analytics-container h1 {
+    font-size: 1.8rem;
+  }
+
+  .filter-section {
+    flex-direction: column;
+  }
+
+  .summary-cards,
+  .admin-cards,
+  .revenue-cards,
+  .stats-grid,
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card .amount,
+  .score-card .score,
+  .revenue-card .large-amount,
+  .kpi-value {
+    font-size: 1.8rem;
+  }
+
+  .trips-table,
+  .vehicle-table,
+  .bookings-table,
+  .history-table {
+    font-size: 0.85rem;
+  }
+
+  .trips-table th,
+  .vehicle-table th,
+  .bookings-table th,
+  .history-table th {
+    padding: 0.75rem;
+  }
+
+  .trips-table td,
+  .vehicle-table td,
+  .bookings-table td,
+  .history-table td {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .analytics-container h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .card .amount {
+    font-size: 1.8rem;
+  }
+
+  .reviews-list {
+    grid-template-columns: 1fr;
+  }
+
+  .health-items {
+    grid-template-columns: 1fr;
+  }
+}

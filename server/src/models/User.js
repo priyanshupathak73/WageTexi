@@ -65,6 +65,27 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    // Driver performance tracking
+    performanceScore: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100,
+    },
+    completedTrips: {
+      type: Number,
+      default: 0,
+    },
+    cancelledTrips: {
+      type: Number,
+      default: 0,
+    },
+    // Preferred vehicle type for AI matching
+    preferredVehicleType: {
+      type: String,
+      enum: ['sedan', 'suv', 'hatchback', 'van', 'truck', 'auto', 'other', ''],
+      default: '',
+    },
   },
   { timestamps: true }
 );

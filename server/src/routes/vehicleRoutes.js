@@ -11,6 +11,7 @@ const {
 const { protect, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 const { upload } = require('../config/cloudinary');
+const { getDynamicPrice } = require('../controllers/pricingController');
 
 const router = express.Router();
 
@@ -40,5 +41,7 @@ router.route('/:id')
   .get(getVehicle)
   .put(protect, authorize('owner'), updateVehicle)
   .delete(protect, authorize('owner'), deleteVehicle);
+
+router.get('/:id/price', getDynamicPrice);
 
 module.exports = router;

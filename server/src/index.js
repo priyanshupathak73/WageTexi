@@ -11,6 +11,11 @@ const vehicleRoutes = require('./routes/vehicleRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const matchRoutes = require('./routes/matchRoutes');
+const driverRoutes = require('./routes/driverRoutes');
+const contractRoutes = require('./routes/contractRoutes');
+const locationRoutes = require('./routes/locationRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -37,6 +42,11 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/match', matchRoutes);
+app.use('/api/drivers', driverRoutes);
+app.use('/api/contracts', contractRoutes);
+app.use('/api/location', locationRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
@@ -54,6 +64,31 @@ io.on('connection', (socket) => {
   socket.on('join:user', (userId) => {
     socket.join(`user:${userId}`);
     console.log(`User ${userId} joined their room`);
+  });
+
+  // Driver joins a trip-specific room for targeted location updates
+  socket.on('join:trip', (bookingId) => {
+    socket.join(`trip:${bookingId}`);
+    console.log(`Socket ${socket.id} joined trip room: ${bookingId}`);
+  });
+
+  // Join availability tracking room
+  socket.on('join:availability', () => {
+    socket.join('vehicle:availability');
+    console.log(`Socket ${socket.id} joined vehicle availability tracking`);
+  });
+
+  // Broadcast vehicle availability change
+  socket.on('vehicle:availability:changed', (vehicleData) => {
+    io.to('vehicle:availability').emit('vehicle:availability:updated', vehicleData);
+    console.log(`Vehicle availability updated: ${vehicleData.vehicleId}`);
+  });
+
+  // Broadcast booking status change
+  socket.on('booking:status:changed', (bookingData) => {
+    io.to('vehicle:availability').emit('booking:status:updated', bookingData);
+    io.to(`user:${bookingData.driverId}`).emit('booking:status:updated', bookingData);
+    io.to(`user:${bookingData.ownerId}`).emit('booking:status:updated', bookingData);
   });
 
   socket.on('disconnect', () => {

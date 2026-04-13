@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { bookingService, reviewService } from '../services';
 import { useAuth } from '../context/AuthContext';
 import StatusBadge from '../components/StatusBadge';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
-import { Star, ArrowLeft } from 'lucide-react';
+import { Star, ArrowLeft, FileText, Navigation } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const BookingDetail = () => {
@@ -107,6 +107,26 @@ const BookingDetail = () => {
         {booking.notes && (
           <div className="mt-4 bg-gray-50 rounded-lg px-4 py-3 text-sm text-gray-600">
             Notes: {booking.notes}
+          </div>
+        )}
+
+        {/* Quick actions for contract and tracking */}
+        {['approved', 'active', 'completed'].includes(booking.status) && (
+          <div className="mt-5 pt-5 border-t border-gray-100 flex gap-3 flex-wrap">
+            <Link
+              to={`/contract/${booking._id}`}
+              className="flex items-center gap-2 text-sm text-blue-600 border border-blue-200 px-4 py-2 rounded-lg hover:bg-blue-50 font-medium"
+            >
+              <FileText size={15} /> View Contract
+            </Link>
+            {booking.status === 'active' && (
+              <Link
+                to={`/trip/${booking._id}`}
+                className="flex items-center gap-2 text-sm text-green-700 border border-green-200 px-4 py-2 rounded-lg hover:bg-green-50 font-medium"
+              >
+                <Navigation size={15} /> Live Tracking
+              </Link>
+            )}
           </div>
         )}
       </div>

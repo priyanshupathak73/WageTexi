@@ -1,18 +1,20 @@
-const StatusBadge = ({ status }) => {
-  const map = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    approved: 'bg-green-100 text-green-800',
-    rejected: 'bg-red-100 text-red-800',
-    active: 'bg-blue-100 text-blue-800',
-    completed: 'bg-gray-100 text-gray-800',
-    cancelled: 'bg-red-50 text-red-600',
-    paid: 'bg-green-100 text-green-700',
-    unpaid: 'bg-orange-100 text-orange-700',
-    refunded: 'bg-purple-100 text-purple-700',
-  };
+const STATUS_CONFIG = {
+  pending:   { bg: 'bg-amber-100',   text: 'text-amber-800',   dot: 'bg-amber-500'   },
+  approved:  { bg: 'bg-emerald-100', text: 'text-emerald-800', dot: 'bg-emerald-500' },
+  rejected:  { bg: 'bg-red-100',     text: 'text-red-800',     dot: 'bg-red-500'     },
+  active:    { bg: 'bg-blue-100',    text: 'text-blue-800',    dot: 'bg-blue-500'    },
+  completed: { bg: 'bg-gray-100',    text: 'text-gray-700',    dot: 'bg-gray-400'    },
+  cancelled: { bg: 'bg-red-50',      text: 'text-red-600',     dot: 'bg-red-400'     },
+  paid:      { bg: 'bg-emerald-100', text: 'text-emerald-700', dot: 'bg-emerald-400' },
+  unpaid:    { bg: 'bg-orange-100',  text: 'text-orange-700',  dot: 'bg-orange-400'  },
+  refunded:  { bg: 'bg-purple-100',  text: 'text-purple-700',  dot: 'bg-purple-400'  },
+};
 
+const StatusBadge = ({ status }) => {
+  const cfg = STATUS_CONFIG[status] || { bg: 'bg-gray-100', text: 'text-gray-600', dot: 'bg-gray-400' };
   return (
-    <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${map[status] || 'bg-gray-100 text-gray-600'}`}>
+    <span className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold capitalize ${cfg.bg} ${cfg.text}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot} shrink-0`} />
       {status}
     </span>
   );
