@@ -216,19 +216,27 @@ const Dashboard = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
+        if (!user?.role) {
+          console.warn('User role not available yet');
+          setLoading(false);
+          return;
+        }
+        
+        console.log(`Fetching ${user.role} dashboard...`);
         const service = user.role === 'owner'
           ? bookingService.getOwnerDashboard()
           : bookingService.getDriverDashboard();
         const res = await service;
         setData(res.data.dashboard);
-      } catch {
-        toast.error('Failed to load dashboard');
+      } catch (err) {
+        console.error('Dashboard fetch error:', err);
+        toast.error('Failed to load dashboard: ' + (err.response?.data?.message || err.message));
       } finally {
         setLoading(false);
       }
     };
     fetch();
-  }, [user.role]);
+  }, [user?.role]);
 
   if (loading) return <DashboardSkeleton />;
 

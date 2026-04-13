@@ -27,6 +27,10 @@ const vehicleValidation = [
   body('location.city').trim().notEmpty().withMessage('City is required'),
 ];
 
+// Specific routes first
+router.get('/my/list', protect, authorize('owner'), getMyVehicles);
+
+// General routes - must come after specific routes
 router.route('/')
   .get(getVehicles)
   .post(protect, authorize('owner'), upload.fields([
@@ -35,13 +39,11 @@ router.route('/')
     { name: 'images', maxCount: 5 },
   ]), vehicleValidation, validate, createVehicle);
 
-router.get('/my/list', protect, authorize('owner'), getMyVehicles);
-
+// ID-based routes - must come last
+router.get('/:id/price', getDynamicPrice);
 router.route('/:id')
   .get(getVehicle)
   .put(protect, authorize('owner'), updateVehicle)
   .delete(protect, authorize('owner'), deleteVehicle);
-
-router.get('/:id/price', getDynamicPrice);
 
 module.exports = router;
